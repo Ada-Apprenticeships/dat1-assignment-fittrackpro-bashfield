@@ -3,8 +3,10 @@
 .mode column
 
 -- Enable foreign key support
+PRAGMA foreign_key = ON;
 
 -- Personal Training Queries
 
 -- 1. List all personal training sessions for a specific trainer
 -- TODO: Write a query to list all personal training sessions for a specific trainer
+session_id | member_name | session_date | start_time | end_time
