@@ -468,7 +468,7 @@ class_id | name | start_time | end_time | available_spots
 | List the top 3 most popular classes by registration count |                            |
 | Output                                                    | A result set with columns: |
 
-```plaintext
+
 class_id | class_name | registration_count
 ```
 

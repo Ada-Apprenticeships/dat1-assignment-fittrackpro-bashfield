@@ -314,7 +314,10 @@ VALUES
 (7, 6, '2025-02-11', '13:00:00', '14:00:00', 'Yoga and stretching'),
 (9, 3, '2025-02-15', '08:00:00', '09:00:00', 'Morning cardio session'),
 (11, 7, '2025-02-18', '12:00:00', '13:00:00', 'Midday flexibility workout'),
-(13, 1, '2025-02-20', '15:00:00', '16:00:00', 'Afternoon endurance training');
+(13, 1, '2025-02-20', '15:00:00', '16:00:00', 'Afternoon endurance training'),
+
+(1, 1, '2025-01-31', '10:00:00', '11:00:00', 'Testing 1'),
+(2, 2, '2025-02-25', '15:00:00', '16:00:00', 'Testing 2');
 
 -- Creating member_health_metrics table
 CREATE TABLE member_health_metrics (
