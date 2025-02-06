@@ -6,44 +6,47 @@
 PRAGMA foreign_key = ON;
 
 -- User Management Queries
-/*
+
 -- 1. Retrieve all members
 SELECT member_id, first_name, last_name, email, join_date
-FROM members
+FROM members;
 
 -- 2. Update a member's contact information
 UPDATE members
 SET phone_number = '555-9876', email = 'emily.jones.updated@email.com'
-WHERE member_id = 5
+WHERE member_id = 5;
 
 -- 3. Count total number of members
 SELECT COUNT(*) total_members
-FROM members
+FROM members;
 
-*/
 -- 4. Find member with the most class registrations
---Output	A single row with columns:
--- TODO: Write a query to find the member with the most class registrations
-SELECT m.member_id, m.first_name, m.last_name, c.attendance_status, COUNT(*) registration_count
-FROM members m
-INNER JOIN class_attendance c
+SELECT c.member_id, m.first_name, m.last_name, COUNT(c.attendance_status) registration_count
+FROM class_attendance c
+INNER JOIN members m
 ON m.member_id = c.member_id
---WHERE attendance_status = 'Registered'
-WHERE ((SELECT MAX(attendance_status) FROM class_attendance) AND attendance_status = 'Registered')
+WHERE c.attendance_status = 'Registered'
+GROUP BY c.member_id
+ORDER BY registration_count DESC
+LIMIT 1;
 
-/*
 -- 5. Find member with the least class registrations
-Output	A single row with columns:
-member_id | first_name | last_name | registration_count
--- TODO: Write a query to find the member with the least class registrations
---SELECT *
---FROM members
---WHERE viewdate = (SELECT MAX(viewdate) FROM viewing)
-/*
+SELECT c.member_id, m.first_name, m.last_name, COUNT(c.attendance_status) registration_count
+FROM class_attendance c
+INNER JOIN members m
+ON m.member_id = c.member_id
+WHERE c.attendance_status = 'Registered'
+GROUP BY c.member_id
+ORDER BY registration_count ASC
+LIMIT 1;
 
 -- 6. Calculate the percentage of members who have attended at least one class
--- TODO: Write a query to calculate the percentage of members who have attended at least one class
---SELECT
-Calculate the percentage of members who have attended at least one class	
-Output	A single value representing the percentage.
-
+SELECT 100 * members_attended / total_members percentage
+FROM (
+    SELECT  
+    (SELECT COUNT(member_id) FROM members) total_members, COUNT(DISTINCT c.member_id) members_attended
+    FROM members m
+    LEFT JOIN class_attendance c 
+    ON m.member_id = c.member_id
+    WHERE attendance_status = 'Attended'
+    );

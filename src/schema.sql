@@ -51,7 +51,7 @@ CREATE TABLE members (
 );
 
 INSERT INTO members (first_name, last_name, email, phone_number, date_of_birth, join_date, emergency_contact_name, emergency_contact_phone)
-VALUES 
+VALUES
 ('Alice', 'Johnson', 'alice.j@email.com', '555-1111', '1990-05-15', '2024-11-10', 'Bob Johnson', '555-1112'),
 ('Bob', 'Smith', 'bob.s@email.com', '555-2222', '1985-09-22', '2024-12-15', 'Alice Smith', '555-2223'),
 ('Carol', 'Williams', 'carol.w@email.com', '555-3333', '1992-12-03', '2025-01-20', 'David Williams', '555-3334'),
@@ -269,7 +269,12 @@ VALUES
 (5, 13, 'Attended'),
 (6, 1, 'Registered'),
 (7, 2, 'Registered'),
-(8, 3, 'Registered');
+(8, 3, 'Registered'),
+
+--Testing 
+(1, 16, 'Registered'),
+(2, 16, 'Registered'),
+(3, 1, 'Attended');
 
 -- Creating payments table
 CREATE TABLE payments (

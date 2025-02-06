@@ -14,4 +14,4 @@ INNER JOIN members m
 ON m.member_id = p.member_id
 INNER JOIN staff s
 ON s.staff_id = p.staff_id
-WHERE s.first_name = 'Ivy' AND s.last_name ='Irwin'
+WHERE s.first_name = 'Ivy' AND s.last_name ='Irwin';
