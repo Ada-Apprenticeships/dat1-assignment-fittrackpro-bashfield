@@ -8,18 +8,22 @@ PRAGMA foreign_key = ON;
 -- Membership Management Queries
 
 -- 1. List all active memberships
--- TODO: Write a query to list all active memberships
-Output	A result set with columns:
-member_id | first_name | last_name | membership_type | join_date
+SELECT ms.member_id, m.first_name, m.last_name, ms.type membership_type, m.join_date
+FROM memberships ms
+INNER JOIN members m
+ON m.member_id = ms.member_id
+WHERE status = 'Active';
 
 -- 2. Calculate the average duration of gym visits for each membership type
--- TODO: Write a query to calculate the average duration of gym visits for each membership type
-Output	A result set with columns:
-| Calculate the average duration of gym visits for each membership type |   
-membership_type | avg_visit_duration_minutes
+SELECT ms.type membership_type, AVG((strftime('%s', a.check_out_time) - strftime('%s', a.check_in_time)) / 60) avg_visit_duration_minutes
+FROM attendance a
+INNER JOIN memberships ms
+ON a.member_id = ms.member_id
+GROUP BY ms.type;
 
 -- 3. Identify members with expiring memberships this year
-| List members whose memberships will expire within the next year |     
--- TODO: Write a query to identify members with expiring memberships this year
-Output	A result set with columns:
-member_id | first_name | last_name | email | end_date
+SELECT ms.membership_id member_id, m.first_name, m.last_name, m.email, ms.end_date
+FROM memberships ms
+INNER JOIN members m
+ON ms.member_id = m.member_id
+WHERE end_date <= DATE('now', '+1 year');

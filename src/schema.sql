@@ -66,7 +66,11 @@ VALUES
 ('Liam', 'Anderson', 'liam.a@email.com', '555-1515', '1994-07-19', '2025-01-01', 'Mia Anderson', '555-1516'),
 ('Mia', 'Thomas', 'mia.t@email.com', '555-1717', '1991-11-30', '2025-01-10', 'Noah Thomas', '555-1718'),
 ('Noah', 'Roberts', 'noah.r@email.com', '555-1919', '1987-04-25', '2025-01-15', 'Olivia Roberts', '555-1920'),
-('Olivia', 'Clark', 'olivia.c@email.com', '555-2121', '1993-09-08', '2025-01-20', 'Peter Clark', '555-2122');
+('Olivia', 'Clark', 'olivia.c@email.com', '555-2121', '1993-09-08', '2025-01-20', 'Peter Clark', '555-2122'),
+
+--Testing for 5.3
+('Katie', 'Sloan', 'sloan.k@email.com', '555-2060', '2002-10-03', '2025-01-20', 'Beth Ashfield', '555-7777');
+
 
 -- Creating staff table
 CREATE TABLE staff (
@@ -90,7 +94,10 @@ VALUES
 ('Henry', 'Harris', 'henry.h@fittrackpro.com', '555-8888', 'Maintenance', '2025-01-05', 1),
 ('Ivy', 'Irwin', 'ivy.i@fittrackpro.com', '555-9999', 'Trainer', '2025-01-01', 2),
 ('Jack', 'Johnson', 'jack.j@fittrackpro.com', '555-0000', 'Manager', '2024-11-15', 1),
-('Karen', 'King', 'karen.k@fittrackpro.com', '555-1212', 'Trainer', '2024-12-01', 2);
+('Karen', 'King', 'karen.k@fittrackpro.com', '555-1212', 'Trainer', '2024-12-01', 2),
+
+--Testing staff 
+('Beth', 'Ashfield', 'beth.a@fittrackpro.com', '555-1111', 'Trainer', '2024-12-01', 2);
 
 
 -- Creating equipment table
@@ -123,7 +130,9 @@ VALUES
 ('Leg Press 1', 'Strength', '2024-11-13', '2025-01-05', '2025-04-05', 1),
 ('Leg Press 2', 'Strength', '2024-11-14', '2025-01-10', '2025-04-10', 2),
 ('Stationary Bike 1', 'Cardio', '2024-11-15', '2025-01-15', '2025-04-15', 1),
-('Stationary Bike 2', 'Cardio', '2024-11-16', '2025-01-20', '2025-04-20', 2);
+('Stationary Bike 2', 'Cardio', '2024-11-16', '2025-01-20', '2025-04-20', 2),
+
+('Stationary Bike 2', 'Cardio', '2025-01-04', '2025-01-20', '2025-04-20', 2);
 
 -- Creating classes table
 CREATE TABLE classes (
@@ -198,15 +207,18 @@ VALUES
 (12, 'Basic', '2024-12-25', '2025-12-24', 'Active'),
 (13, 'Premium', '2025-01-01', '2025-12-31', 'Active'),
 (14, 'Basic', '2025-01-05', '2026-01-04', 'Inactive'),
-(15, 'Premium', '2025-01-10', '2026-01-09', 'Active');
+(15, 'Premium', '2025-01-10', '2026-01-09', 'Active'),
+
+--Task 5.3 Test 
+(16, 'Premium', '2025-01-10', '2026-02-04', 'Active');
 
 -- Creating attendance table
 CREATE TABLE attendance (
     attendance_id INTEGER PRIMARY KEY ,
     member_id INTEGER NOT NULL ,
     location_id INTEGER NOT NULL ,
-    check_in_time CHAR(19) CHECK(check_in_time LIKE '____-__-__ __:__:__' AND LENGTH(check_in_time) = 19) ,
-    check_out_time CHAR(19) CHECK(check_out_time LIKE '____-__-__ __:__:__' AND LENGTH(check_out_time) = 19) ,
+    check_in_time DATETIME CHECK(check_in_time LIKE '____-__-__ __:__:__' AND LENGTH(check_in_time) = 19) ,
+    check_out_time DATETIME CHECK(check_out_time LIKE '____-__-__ __:__:__' AND LENGTH(check_out_time) = 19) ,
     FOREIGN KEY (member_id) REFERENCES members(member_id) ,
     FOREIGN KEY (location_id) REFERENCES locations(location_id)
 );
@@ -224,6 +236,10 @@ VALUES
 (8, 2, '2025-01-20 10:00:00', '2025-01-20 11:15:00'),
 (9, 1, '2025-01-25 14:30:00', '2025-01-25 16:00:00'),
 (10, 2, '2025-01-28 19:00:00', '2025-01-28 20:30:00');
+
+-- Testing task 6.2 will print both attendance records for the same member 
+--(5, 1, '2025-02-03 09:00:00', '2025-02-03 10:45:00');
+
 
 -- Creating class_attendance table
 CREATE TABLE class_attendance (
@@ -316,8 +332,9 @@ VALUES
 (11, 7, '2025-02-18', '12:00:00', '13:00:00', 'Midday flexibility workout'),
 (13, 1, '2025-02-20', '15:00:00', '16:00:00', 'Afternoon endurance training'),
 
-(1, 1, '2025-01-31', '10:00:00', '11:00:00', 'Testing 1'),
-(2, 2, '2025-02-25', '15:00:00', '16:00:00', 'Testing 2');
+--Testing
+(1, 9, '2025-02-05', '10:00:00', '11:00:00', 'Testing 1'),
+(2, 9, '2025-02-10', '15:00:00', '16:00:00', 'Testing 2');
 
 -- Creating member_health_metrics table
 CREATE TABLE member_health_metrics (
