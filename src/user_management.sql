@@ -22,23 +22,37 @@ FROM members;
 
 -- 4. Find member with the most class registrations
 -- NOTE FOR MARKER: Interpreted this as the member from the first row with the most class registrations as task output only wanted "A single row with columns"
--- NOTE FOR SELF: Is there a way if there were multiple to print them all out? Add own data in to make it so one person is top only
-SELECT 
-    c.member_id, 
-    m.first_name, 
-    m.last_name, 
-    COUNT(c.attendance_status) AS registration_count
-FROM class_attendance c
-INNER JOIN members m
-ON m.member_id = c.member_id
-WHERE c.attendance_status = 'Registered'
-GROUP BY c.member_id
-ORDER BY registration_count DESC
-LIMIT 1;
+WITH registration_counts AS (
+    SELECT c.member_id, 
+        m.first_name, 
+        m.last_name, 
+        COUNT(c.attendance_status) AS registration_count
+    FROM class_attendance c
+    INNER JOIN members m 
+    ON m.member_id = c.member_id
+    WHERE c.attendance_status = 'Registered'
+    GROUP BY c.member_id
+)
+SELECT * FROM registration_counts
+WHERE registration_count = (SELECT MAX(registration_count) FROM registration_counts);
 
 -- 5. Find member with the least class registrations
 -- NOTE FOR MARKER: Interpreted this as the top member with the least class registrations as output only wanted a single row.
--- NOTE FOR SELF: Is there a way if there were multiple to print them all out?
+WITH registration_counts AS (
+    SELECT c.member_id,
+        m.first_name, 
+        m.last_name, 
+        COUNT(c.attendance_status) AS registration_count
+    FROM class_attendance c
+    INNER JOIN members m 
+    ON m.member_id = c.member_id
+    WHERE c.attendance_status = 'Registered'
+    GROUP BY c.member_id
+)
+SELECT * FROM registration_counts
+WHERE registration_count = (SELECT MIN(registration_count) FROM registration_counts);
+
+/*
 SELECT 
     c.member_id, 
     m.first_name, 
@@ -51,10 +65,11 @@ WHERE c.attendance_status = 'Registered'
 GROUP BY c.member_id
 ORDER BY registration_count ASC
 LIMIT 1;
+*/
+
 
 -- 6. Calculate the percentage of members who have attended at least one class
-SELECT 
-    100 * members_attended / total_members AS percentage
+SELECT 100 * members_attended / total_members AS percentage
 FROM (
     SELECT
         (SELECT COUNT(member_id) FROM members) AS total_members, 

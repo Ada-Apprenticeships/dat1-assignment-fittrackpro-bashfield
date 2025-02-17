@@ -10,7 +10,7 @@ PRAGMA foreign_keys = ON;
 -- 1. Record a member's gym visit
 INSERT INTO attendance (member_id, location_id, check_in_time, check_out_time)
 VALUES
-(7, 1, CURRENT_TIMESTAMP, NULL);
+(7, 1, DATETIME('now', 'localtime'), NULL);
 
 
 -- 2. Retrieve a member's attendance history
@@ -24,13 +24,8 @@ WHERE member_id = 5;
 
 -- 3. Find the busiest day of the week based on gym visits
 -- NOTE FOR MARKER: CAST( -- AS integer)Interpreted outLIMIT has been included if output wanted is just the busiest day of the week, can be removed to show the visit counts for all the weekdays in order
-/*
-SELECT
-  day_of_week, 
-  COUNT(*) AS visit_count
-  FROM (
-  SELECT 
-    CASE CAST(strftime('%w', check_in_time) AS integer)
+WITH daily_visits AS (
+  SELECT CASE CAST(strftime('%w', check_in_time) AS INTEGER)
       WHEN 0 THEN 'Sunday' --1
       WHEN 1 THEN 'Monday' --1
       WHEN 2 THEN 'Tuesday' --2
@@ -38,42 +33,28 @@ SELECT
       WHEN 4 THEN 'Thursday'
       WHEN 5 THEN 'Friday' --4
       ELSE 'Saturday' --1
-    END AS day_of_week
-    FROM attendance
-)
-GROUP BY day_of_week;
---ORDER BY visit_count DESC;
---LIMIT 1; 
-*/
-
-SELECT day_of_week, COUNT(*) visit_count
-  FROM (
-    SELECT CASE CAST(strftime('%w', check_in_time) as integer)
-      WHEN 0 THEN 'Sunday'
-      WHEN 1 THEN 'Monday'
-      WHEN 2 THEN 'Tuesday'
-      WHEN 3 THEN 'Wednesday'
-      WHEN 4 THEN 'Thursday'
-      WHEN 5 THEN 'Friday'
-      ELSE 'Saturday' 
-    END day_of_week
-    FROM attendance
-  )
+    END AS day_of_week,
+    COUNT(*) AS visit_count
+  FROM attendance
   GROUP BY day_of_week
-  ORDER BY visit_count DESC
-  LIMIT 1;
+)
+SELECT day_of_week, 
+  visit_count
+FROM daily_visits
+WHERE visit_count = (SELECT MAX(visit_count) FROM daily_visits);
+
 
 -- 4. Calculate the average daily attendance for each location
-SELECT 
-  location_name, 
-  AVG(count) AS avg_daily_attendance
-FROM (
-  SELECT 
-    l.name AS location_name, 
-    COUNT(a.location_id) AS count
+WITH daily_attendance AS (
+  SELECT l.name AS location_name, 
+    strftime('%Y-%m-%d', a.check_in_time) AS visit_date,
+    COUNT(a.attendance_id) AS daily_visits
   FROM attendance AS a
-  INNER JOIN locations AS l
+  INNER JOIN locations AS l 
   ON l.location_id = a.location_id
-  GROUP BY location_name
+  GROUP BY location_name, visit_date
 )
+SELECT location_name, 
+  AVG(daily_visits) AS avg_daily_attendance
+FROM daily_attendance
 GROUP BY location_name;

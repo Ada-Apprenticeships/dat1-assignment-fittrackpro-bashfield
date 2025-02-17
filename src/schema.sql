@@ -27,44 +27,35 @@ PRAGMA foreign_keys = ON;
 -- Creating locations table
 CREATE TABLE locations (
     location_id INTEGER PRIMARY KEY ,
-    name VARCHAR(30) NOT NULL CHECK(LENGTH(name) <= 30) ,
-    address VARCHAR(50) NOT NULL CHECK(address LIKE '%,%' AND LENGTH(address) <= 50) ,
-    phone_number CHAR(8) NOT NULL CHECK(phone_number REGEXP '^555-[0-9]{4}$') ,
-    email VARCHAR(30) NOT NULL CHECK(email LIKE '%@fittrackpro.com') ,
-    opening_hours VARCHAR(11) NOT NULL CHECK(opening_hours REGEXP '^[0-2]?[0-9]:[0-5][0-9]-[0-2]?[0-9]:[0-5][0-9]$') 
+    name TEXT NOT NULL CHECK(LENGTH(name) <= 30) ,
+    address TEXT NOT NULL CHECK(address LIKE '%,%' AND LENGTH(address) <= 50) ,
+    phone_number TEXT NOT NULL CHECK(phone_number REGEXP '^555-[0-9]{4}$') ,
+    email TEXT NOT NULL CHECK(email LIKE '%@fittrackpro.com') ,
+    opening_hours TEXT NOT NULL CHECK(opening_hours REGEXP '^[0-2]?[0-9]:[0-5][0-9]-[0-2]?[0-9]:[0-5][0-9]$') 
 );
-
--- Creating own sample data
-INSERT INTO locations (name, address, phone_number, email, opening_hours)
-VALUES 
-('Gym test', '123 Main St, Cityville', '555-1114', 'downtown@fittrackpro.com', '6:00-22:00');
 
 -- Creating members table
 CREATE TABLE members (
     member_id INTEGER PRIMARY KEY ,
-    first_name VARCHAR(15) NOT NULL CHECK(LENGTH(first_name) <= 15) ,
-    last_name VARCHAR(15) NOT NULL CHECK(LENGTH(last_name) <= 15) ,
-    email VARCHAR(30) NOT NULL CHECK(email LIKE '%@email.com' AND LENGTH(email) <= 30) ,
-    phone_number CHAR(8) CHECK(phone_number REGEXP '^555-[0-9]{4}$') ,
-    date_of_birth DATE NOT NULL CHECK(date_of_birth REGEXP '^[0-9]{4}-(0[1-9]|1[0,1,2])-(0[1-9]|[1-2][0-9]|3[0,1])$') ,
-    join_date DATE NOT NULL CHECK(join_date REGEXP '^[0-9]{4}-(0[1-9]|1[0,1,2])-(0[1-9]|[1-2][0-9]|3[0,1])$') ,
-    emergency_contact_name VARCHAR(30) NOT NULL ,
-    emergency_contact_phone CHAR(8) NOT NULL CHECK(emergency_contact_phone LIKE '555-____' AND LENGTH(emergency_contact_phone) = 8)
+    first_name TEXT NOT NULL CHECK(LENGTH(first_name) <= 15) ,
+    last_name TEXT NOT NULL CHECK(LENGTH(last_name) <= 15) ,
+    email TEXT NOT NULL CHECK(email LIKE '%@email.com' AND LENGTH(email) <= 30) ,
+    phone_number TEXT CHECK(phone_number REGEXP '^555-[0-9]{4}$') ,
+    date_of_birth DATE NOT NULL CHECK(date_of_birth REGEXP '^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0,1])$') ,
+    join_date DATE NOT NULL CHECK(join_date REGEXP '^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0,1])$') ,
+    emergency_contact_name TEXT NOT NULL CHECK(LENGTH(emergency_contact_name) <= 30) ,
+    emergency_contact_phone TEXT NOT NULL CHECK(emergency_contact_phone REGEXP '^555-[0-9]{4}$')
 );
-
-INSERT INTO members (first_name, last_name, email, phone_number, date_of_birth, join_date, emergency_contact_name, emergency_contact_phone)
-VALUES 
-('Alice', 'J', 'alice.j@email.com', '555-1111', '1990-12-15', '2024-11-10', 'Bob Johnson', '555-1112');
 
 -- Creating staff table
 CREATE TABLE staff (
     staff_id INTEGER PRIMARY KEY ,
-    first_name VARCHAR(15) NOT NULL , 
-    last_name VARCHAR(15) NOT NULL ,	
-    email VARCHAR(40) NOT NULL CHECK(email LIKE '%@fittrackpro.com') ,
-    phone_number CHAR(8) NOT NULL CHECK(phone_number LIKE '555-____' AND LENGTH(phone_number) = 8) ,
-    position VARCHAR(12) NOT NULL CHECK(position IN ('Trainer', 'Manager', 'Receptionist', 'Maintenance')) ,
-    hire_date DATE NOT NULL CHECK(hire_date REGEXP '^[0-9]{4}-(0[1-9]|1[0,1,2])-(0[1-9]|[1-2][0-9]|3[0,1])$') ,
+    first_name TEXT NOT NULL CHECK(LENGTH(first_name) <= 15) ,
+    last_name TEXT NOT NULL CHECK(LENGTH(last_name) <= 15) ,
+    email TEXT NOT NULL CHECK(email LIKE '%@fittrackpro.com' AND LENGTH(email) <= 30) ,
+    phone_number TEXT NOT NULL CHECK(phone_number REGEXP '^555-[0-9]{4}$') ,
+    position TEXT NOT NULL CHECK(position IN ('Trainer', 'Manager', 'Receptionist', 'Maintenance')) ,
+    hire_date DATE NOT NULL CHECK(hire_date REGEXP '^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0,1])$') ,
     location_id INTEGER NOT NULL ,
     FOREIGN KEY (location_id) REFERENCES locations(location_id)
 );
@@ -72,11 +63,11 @@ CREATE TABLE staff (
 -- Creating equipment table
 CREATE TABLE equipment (
     equipment_id INTEGER PRIMARY KEY ,	
-    name VARCHAR(15) NOT NULL ,	
-    type VARCHAR(8) NOT NULL CHECK(type IN ('Cardio', 'Strength')) ,
-    purchase_date DATE NOT NULL CHECK(purchase_date REGEXP '^[0-9]{4}-(0[1-9]|1[0,1,2])-(0[1-9]|[1-2][0-9]|3[0,1])$') ,
-    last_maintenance_date DATE NOT NULL CHECK(last_maintenance_date REGEXP '^[0-9]{4}-(0[1-9]|1[0,1,2])-(0[1-9]|[1-2][0-9]|3[0,1])$') ,
-    next_maintenance_date DATE NOT NULL CHECK(next_maintenance_date REGEXP '^[0-9]{4}-(0[1-9]|1[0,1,2])-(0[1-9]|[1-2][0-9]|3[0,1])$') ,
+    name TEXT NOT NULL CHECK(LENGTH(name) <= 25) ,
+    type TEXT NOT NULL CHECK(type IN ('Cardio', 'Strength') AND LENGTH(type) <= 8) ,
+    purchase_date DATE NOT NULL CHECK(purchase_date REGEXP '^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$') ,
+    last_maintenance_date DATE NOT NULL CHECK(last_maintenance_date REGEXP '^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0,1])$') ,
+    next_maintenance_date DATE NOT NULL CHECK(next_maintenance_date REGEXP '^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0,1])$') ,
     location_id	INTEGER NOT NULL ,
     FOREIGN KEY (location_id) REFERENCES locations(location_id)
 );
@@ -84,10 +75,10 @@ CREATE TABLE equipment (
 -- Creating classes table
 CREATE TABLE classes (
     class_id INTEGER PRIMARY KEY ,
-    name VARCHAR(15) NOT NULL ,
-    description VARCHAR(50) NOT NULL ,--CHECK(LENGTH(description) >= 100) ,
-    capacity INTEGER NOT NULL ,
-    duration INTEGER NOT NULL ,
+    name TEXT NOT NULL CHECK(LENGTH(name) <= 25) ,
+    description TEXT NOT NULL CHECK(LENGTH(description) <= 50) ,
+    capacity INTEGER NOT NULL CHECK(capacity > 0) ,
+    duration INTEGER NOT NULL CHECK(duration > 0) ,
     location_id INTEGER NOT NULL ,
     FOREIGN KEY (location_id) REFERENCES locations(location_id)
 );
@@ -97,8 +88,8 @@ CREATE TABLE class_schedule (
     schedule_id INTEGER PRIMARY KEY ,
     class_id INTEGER NOT NULL ,
     staff_id INTEGER NOT NULL ,
-    start_time VARCHAR(19) NOT NULL CHECK(start_time LIKE '____-__-__ __:__:__' AND LENGTH(start_time) = 19) ,
-    end_time VARCHAR(19) NOT NULL CHECK(end_time LIKE '____-__-__ __:__:__' AND LENGTH(end_time) = 19) ,
+    start_time TEXT NOT NULL CHECK(start_time REGEXP '^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0,1])\s([0-1][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$') ,
+    end_time TEXT NOT NULL CHECK(end_time REGEXP '^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0,1])\s([0-1][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$' AND end_time > start_time) ,
     FOREIGN KEY (class_id) REFERENCES classes(class_id) ,
     FOREIGN KEY (staff_id) REFERENCES staff(staff_id)
 );
@@ -107,10 +98,10 @@ CREATE TABLE class_schedule (
 CREATE TABLE memberships (
     membership_id INTEGER PRIMARY KEY ,	
     member_id INTEGER NOT NULL ,	
-    type VARCHAR(7) NOT NULL CHECK(type IN ('Basic', 'Premium')) ,
-    start_date DATE NOT NULL CHECK(start_date REGEXP '^[0-9]{4}-(0[1-9]|1[0,1,2])-(0[1-9]|[1-2][0-9]|3[0,1])$') ,	
-    end_date DATE CHECK(end_date LIKE '^[0-9]{4}-(0[1-9]|1[0,1,2])-(0[1-9]|[1-2][0-9]|3[0,1])$') ,
-    status VARCHAR(8) NOT NULL CHECK(status IN ('Active', 'Inactive')) ,
+    type TEXT NOT NULL CHECK(type IN ('Basic', 'Premium')) ,
+    start_date DATE NOT NULL CHECK(start_date REGEXP '^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0,1])$') ,	
+    end_date DATE NOT NULL CHECK(end_date REGEXP '^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0,1])$') ,
+    status TEXT NOT NULL CHECK(status IN ('Active', 'Inactive')) ,
     FOREIGN KEY (member_id) REFERENCES members(member_id)
 );
 
@@ -119,8 +110,8 @@ CREATE TABLE attendance (
     attendance_id INTEGER PRIMARY KEY ,
     member_id INTEGER NOT NULL ,
     location_id INTEGER NOT NULL ,
-    check_in_time DATETIME CHECK(check_in_time LIKE '____-__-__ __:__:__' AND LENGTH(check_in_time) = 19) ,
-    check_out_time DATETIME CHECK(check_out_time LIKE '____-__-__ __:__:__' AND LENGTH(check_out_time) = 19) ,
+    check_in_time DATETIME CHECK(check_in_time REGEXP '^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0,1])\s([0-1][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$') ,
+    check_out_time DATETIME CHECK(check_out_time REGEXP '^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0,1])\s([0-1][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$') ,
     FOREIGN KEY (member_id) REFERENCES members(member_id) ,
     FOREIGN KEY (location_id) REFERENCES locations(location_id)
 );
@@ -130,7 +121,7 @@ CREATE TABLE class_attendance (
     class_attendance_id INTEGER PRIMARY KEY,	
     schedule_id INTEGER NOT NULL ,
     member_id INTEGER NOT NULL ,	
-    attendance_status VARCHAR(10) NOT NULL CHECK(attendance_status IN ('Registered', 'Attended', 'Unattended')) ,
+    attendance_status TEXT NOT NULL CHECK(attendance_status IN ('Registered', 'Attended', 'Unattended')) ,
     FOREIGN KEY (schedule_id) REFERENCES class_schedule(schedule_id),
     FOREIGN KEY (member_id) REFERENCES members(member_id)
 );
@@ -139,10 +130,10 @@ CREATE TABLE class_attendance (
 CREATE TABLE payments (
     payment_id INTEGER PRIMARY KEY ,	
     member_id INTEGER NOT NULL ,	
-    amount DECIMAL(10,2) NOT NULL , --CHECK(amount LIKE '%.%') ,	
-    payment_date CHAR(19) NOT NULL CHECK(payment_date LIKE '____-__-__ __:__:__' AND LENGTH(payment_date) = 19) ,	
-    payment_method VARCHAR(13) NOT NULL CHECK(payment_method IN ('Credit Card', 'Bank Transfer', 'PayPal', 'Cash')) ,
-    payment_type VARCHAR(22) NOT NULL CHECK(payment_type IN ('Monthly membership fee', 'Day pass')) ,
+    amount REAL NOT NULL CHECK(amount > 0) ,
+    payment_date TEXT NOT NULL CHECK(payment_date REGEXP '^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0,1])\s([0-1][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$') ,
+    payment_method TEXT NOT NULL CHECK(payment_method IN ('Credit Card', 'Bank Transfer', 'PayPal', 'Cash')) ,
+    payment_type TEXT NOT NULL CHECK(payment_type IN ('Monthly membership fee', 'Day pass')) ,
     FOREIGN KEY (member_id) REFERENCES members(member_id)
 );
 
@@ -151,11 +142,11 @@ CREATE TABLE personal_training_sessions (
     session_id INTEGER PRIMARY KEY ,
     member_id INTEGER NOT NULL ,
     staff_id INTEGER NOT NULL ,
-    session_date DATE NOT NULL CHECK(session_date REGEXP '^[0-9]{4}-(0[1-9]|1[0,1,2])-(0[1-9]|[1-2][0-9]|3[0,1])$') ,
-    start_time CHAR(8) NOT NULL CHECK(start_time LIKE '__:__:__' AND LENGTH(start_time) = 8) ,
-    end_time CHAR(8) NOT NULL CHECK(end_time LIKE '__:__:__' AND LENGTH(end_time) = 8) ,
-    notes VARCHAR(50) ,
-    FOREIGN KEY (member_id) REFERENCES members(member_id),
+    session_date DATE NOT NULL CHECK(session_date REGEXP '^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0,1])$') ,
+    start_time TEXT NOT NULL CHECK(start_time REGEXP '^([0-1][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$') ,
+    end_time TEXT NOT NULL CHECK(end_time REGEXP '^([0-1][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$') ,
+    notes TEXT CHECK(LENGTH(notes) <= 50) ,
+    FOREIGN KEY (member_id) REFERENCES members(member_id) ,
     FOREIGN KEY (staff_id) REFERENCES staff(staff_id)
 );
 
@@ -163,8 +154,8 @@ CREATE TABLE personal_training_sessions (
 CREATE TABLE member_health_metrics (
     metric_id INTEGER PRIMARY KEY ,
     member_id INTEGER NOT NULL ,
-    measurement_date CHAR(10) CHECK(measurement_date LIKE '____-__-__' AND LENGTH(measurement_date) = 10) ,
-    weight DECIMAL(5,2) ,
+    measurement_date TEXT CHECK(measurement_date REGEXP '^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0,1])$') ,
+    weight INTEGER,--DECIMAL(5,2) ,
     body_fat_percentage DECIMAL(5,2) ,
     muscle_mass DECIMAL(5,2) ,
     bmi DECIMAL(5,2) ,
@@ -175,16 +166,15 @@ CREATE TABLE member_health_metrics (
 CREATE TABLE equipment_maintenance_log (
     log_id INTEGER PRIMARY KEY ,
     equipment_id INTEGER NOT NULL ,
-    maintenance_date CHAR(10) NOT NULL CHECK(maintenance_date LIKE '____-__-__' AND LENGTH(maintenance_date) = 10) ,
-    description VARCHAR(50) NOT NULL ,
+    maintenance_date TEXT NOT NULL CHECK(maintenance_date REGEXP '^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0,1])$') ,
+    description TEXT NOT NULL CHECK(LENGTH(description) <= 50) ,
     staff_id INTEGER NOT NULL ,
     FOREIGN KEY (equipment_id) REFERENCES equipment(equipment_id) ,
     FOREIGN KEY (staff_id) REFERENCES staff(staff_id)
 );
 
+-- Sample_data.sql copied and pasted to make CHECK constraints easier to test
 
--- Sample_data.sql copied and pasted to make CHECK constraints easier to check
-/*
 -- Sample data for locations
 INSERT INTO locations (name, address, phone_number, email, opening_hours)
 VALUES 
@@ -208,10 +198,7 @@ VALUES
 ('Liam', 'Anderson', 'liam.a@email.com', '555-1515', '1994-07-19', '2025-01-01', 'Mia Anderson', '555-1516'),
 ('Mia', 'Thomas', 'mia.t@email.com', '555-1717', '1991-11-30', '2025-01-10', 'Noah Thomas', '555-1718'),
 ('Noah', 'Roberts', 'noah.r@email.com', '555-1919', '1987-04-25', '2025-01-15', 'Olivia Roberts', '555-1920'),
-('Olivia', 'Clark', 'olivia.c@email.com', '555-2121', '1993-09-08', '2025-01-20', 'Peter Clark', '555-2122'),
-
---Testing for 5.3
-('Katie', 'Sloan', 'sloan.k@email.com', '555-2060', '2002-10-03', '2025-01-20', 'Beth Ashfield', '555-7777');
+('Olivia', 'Clark', 'olivia.c@email.com', '555-2121', '1993-09-08', '2025-01-20', 'Peter Clark', '555-2122');
 
 -- Sample data for staff
 INSERT INTO staff (first_name, last_name, email, phone_number, position, hire_date, location_id)
@@ -223,10 +210,7 @@ VALUES
 ('Henry', 'Harris', 'henry.h@fittrackpro.com', '555-8888', 'Maintenance', '2025-01-05', 1),
 ('Ivy', 'Irwin', 'ivy.i@fittrackpro.com', '555-9999', 'Trainer', '2025-01-01', 2),
 ('Jack', 'Johnson', 'jack.j@fittrackpro.com', '555-0000', 'Manager', '2024-11-15', 1),
-('Karen', 'King', 'karen.k@fittrackpro.com', '555-1212', 'Trainer', '2024-12-01', 2),
-
---Testing staff 
-('Beth', 'Ashfield', 'beth.a@fittrackpro.com', '555-1111', 'Trainer', '2024-12-01', 2);
+('Karen', 'King', 'karen.k@fittrackpro.com', '555-1212', 'Trainer', '2024-12-01', 2);
 
 -- Sample data for equipment
 INSERT INTO equipment (name, type, purchase_date, last_maintenance_date, next_maintenance_date, location_id)
@@ -246,9 +230,7 @@ VALUES
 ('Leg Press 1', 'Strength', '2024-11-13', '2025-01-05', '2025-04-05', 1),
 ('Leg Press 2', 'Strength', '2024-11-14', '2025-01-10', '2025-04-10', 2),
 ('Stationary Bike 1', 'Cardio', '2024-11-15', '2025-01-15', '2025-04-15', 1),
-('Stationary Bike 2', 'Cardio', '2024-11-16', '2025-01-20', '2025-04-20', 2),
-
-('Stationary Bike 2', 'Cardio', '2025-01-04', '2025-01-20', '2025-04-20', 2);
+('Stationary Bike 2', 'Cardio', '2024-11-16', '2025-01-20', '2025-04-20', 2);
 
 -- Sample data for classes
 INSERT INTO classes (name, description, capacity, duration, location_id)
@@ -290,10 +272,7 @@ VALUES
 (12, 'Basic', '2024-12-25', '2025-12-24', 'Active'),
 (13, 'Premium', '2025-01-01', '2025-12-31', 'Active'),
 (14, 'Basic', '2025-01-05', '2026-01-04', 'Inactive'),
-(15, 'Premium', '2025-01-10', '2026-01-09', 'Active'),
-
---Task 5.3 Test 
-(16, 'Premium', '2025-01-10', '2026-02-04', 'Active');
+(15, 'Premium', '2025-01-10', '2026-01-09', 'Active');
 
 -- Sample data for attendance
 INSERT INTO attendance (member_id, location_id, check_in_time, check_out_time)
@@ -308,9 +287,6 @@ VALUES
 (8, 2, '2025-01-20 10:00:00', '2025-01-20 11:15:00'),
 (9, 1, '2025-01-25 14:30:00', '2025-01-25 16:00:00'),
 (10, 2, '2025-01-28 19:00:00', '2025-01-28 20:30:00');
-
--- Testing task 6.2 will print both attendance records for the same member 
---(5, 1, '2025-02-03 09:00:00', '2025-02-03 10:45:00');
 
 -- Sample data for class_attendance
 INSERT INTO class_attendance (schedule_id, member_id, attendance_status)
@@ -330,12 +306,7 @@ VALUES
 (5, 13, 'Attended'),
 (6, 1, 'Registered'),
 (7, 2, 'Registered'),
-(8, 3, 'Registered'),
-
---Testing 
-(1, 16, 'Registered'),
-(2, 16, 'Registered'),
-(3, 1, 'Attended');
+(8, 3, 'Registered');
 
 -- Sample data for payments
 INSERT INTO payments (member_id, amount, payment_date, payment_method, payment_type)
@@ -372,11 +343,7 @@ VALUES
 (7, 6, '2025-02-11', '13:00:00', '14:00:00', 'Yoga and stretching'),
 (9, 3, '2025-02-15', '08:00:00', '09:00:00', 'Morning cardio session'),
 (11, 7, '2025-02-18', '12:00:00', '13:00:00', 'Midday flexibility workout'),
-(13, 1, '2025-02-20', '15:00:00', '16:00:00', 'Afternoon endurance training'),
-
---Testing
-(1, 9, '2025-02-05', '10:00:00', '11:00:00', 'Testing 1'),
-(2, 9, '2025-02-10', '15:00:00', '16:00:00', 'Testing 2');
+(13, 1, '2025-02-20', '15:00:00', '16:00:00', 'Afternoon endurance training');
 
 -- Sample data for member_health_metrics
 INSERT INTO member_health_metrics (member_id, measurement_date, weight, body_fat_percentage, muscle_mass, bmi)
@@ -406,4 +373,96 @@ VALUES
 (9, '2025-01-20', 'Frame inspection and tightening', 1),
 (10, '2025-01-25', 'Safety features check and padding replacement', 2);
 
-*/
+
+-- Creating my own sample data to check my tables and constraints
+
+-- Creating sample data for locations
+INSERT INTO locations (name, address, phone_number, email, opening_hours)
+VALUES 
+('East End Training', '111 Town Rd, Townstreet', '555-1222', 'eastend@fittrackpro.com', '8:00-22:00'),
+('Uptown Gym', '654 Maple Ave, Riverdale', '555-1333', 'uptown@fittrackpro.com', '6:30-20:30'),
+('Central Performance', '456 Elm St, Metropolis', '555-1444', 'central@fittrackpro.com', '6:30-22:30');
+
+-- Creating sample data for members
+INSERT INTO members (first_name, last_name, email, phone_number, date_of_birth, join_date, emergency_contact_name, emergency_contact_phone)
+VALUES
+('Katie', 'Sloan', 'katie.s@email.com', '555-2111', '2002-10-03', '2025-01-20', 'Beth Ashfield', '555-7888'),
+('Sarah', 'Clark', 'sarah.c@email.com', '555-2333', '1995-07-15', '2024-08-10', 'Nancy Green', '555-9888'),
+('James', 'Miller', 'james.m@email.com', '555-3111', '1988-12-01', '2024-09-25', 'Laura Miller', '555-9988');
+
+-- Creating sample data for staff
+INSERT INTO staff (first_name, last_name, email, phone_number, position, hire_date, location_id)
+VALUES 
+('Emily', 'Orange', 'emily.o@fittrackpro.com', '555-9123', 'Trainer', '2023-08-05', 1),
+('Michael', 'Blue', 'michael.b@fittrackpro.com', '555-9124', 'Manager', '2023-08-15', 2),
+('Mitch', 'Green', 'mitch.g@fittrackpro.com', '555-9125', 'Receptionist', '2024-12-15', 3);
+
+-- Creating sample data for equipment
+INSERT INTO equipment (name, type, purchase_date, last_maintenance_date, next_maintenance_date, location_id)
+VALUES 
+('Stationary Bike 3', 'Cardio', '2025-01-04', '2025-01-20', '2025-04-20', 3),
+('Rowing Machine 3', 'Cardio', '2024-11-12', '2025-01-01', '2025-04-01', 4),
+('Leg Press 3', 'Strength', '2024-11-13', '2025-01-05', '2025-04-05', 5);
+
+-- Creating sample data for classes
+INSERT INTO classes (name, description, capacity, duration, location_id)
+VALUES 
+('Yoga Basics', 'Introductory yoga class', 20, 60, 1),
+('HIIT Workout', 'High-intensity interval training', 15, 45, 2),
+('Spin Class', 'Indoor cycling workout', 20, 50, 1);
+
+-- Creating sample data for class_schedule
+INSERT INTO class_schedule (class_id, staff_id, start_time, end_time)
+VALUES 
+(1, 1, '2024-11-01 10:00:00', '2024-11-01 11:00:00'),
+(2, 2, '2024-11-15 18:00:00', '2024-11-15 18:45:00'),
+(3, 6, '2024-12-03 07:00:00', '2024-12-03 07:50:00');
+
+-- Creating sample data for memberships
+INSERT INTO memberships (member_id, type, start_date, end_date, status)
+VALUES
+(16, 'Premium', '2025-01-10', '2026-02-04', 'Active'), --
+(2, 'Basic', '2024-11-05', '2025-11-04', 'Active'),
+(3, 'Premium', '2024-11-10', '2025-11-09', 'Active');
+
+-- Creating sample data for attendance
+INSERT INTO attendance (member_id, location_id, check_in_time, check_out_time)
+VALUES 
+(5, 1, '2025-02-03 09:00:00', '2025-02-03 10:45:00'), --
+(2, 2, '2024-11-15 17:30:00', '2024-11-15 19:00:00'),
+(3, 1, '2024-12-03 08:00:00', '2024-12-03 09:15:00');
+
+-- Creating sample data for class_attendance
+INSERT INTO class_attendance (schedule_id, member_id, attendance_status)
+VALUES 
+(1, 16, 'Registered'), --
+(2, 16, 'Registered'), --
+(3, 1, 'Attended'); --
+
+-- Creating sample data for payments
+INSERT INTO payments (member_id, amount, payment_date, payment_method, payment_type)
+VALUES 
+(1, 50.00, '2024-11-01 10:00:00', 'Credit Card', 'Monthly membership fee'),
+(2, 30.00, '2024-11-05 14:30:00', 'Bank Transfer', 'Monthly membership fee'),
+(3, 50.00, '2024-11-10 09:15:00', 'Credit Card', 'Monthly membership fee');
+
+-- Creating sample data for personal_training_sessions
+INSERT INTO personal_training_sessions (member_id, staff_id, session_date, start_time, end_time, notes)
+VALUES 
+(1, 9, '2025-02-05', '10:00:00', '11:00:00', 'Testing 1'), --
+(2, 9, '2025-02-10', '15:00:00', '16:00:00', 'Testing 2'), --
+(3, 6, '2024-12-07', '09:00:00', '10:00:00', 'Core workout and flexibility');
+
+-- Creating sample data for member_health_metrics
+INSERT INTO member_health_metrics (member_id, measurement_date, weight, body_fat_percentage, muscle_mass, bmi)
+VALUES 
+(1, '2024-11-01', 70.5, 22.0, 35.0, 23.5),
+(2, '2024-11-15', 80.0, 18.0, 40.0, 24.0),
+(3, '2024-12-01', 65.0, 24.0, 32.0, 22.5);
+
+-- Creating sample data for equipment_maintenance_log
+INSERT INTO equipment_maintenance_log (equipment_id, maintenance_date, description, staff_id)
+VALUES 
+(1, '2024-11-15', 'Routine maintenance and belt adjustment', 1),
+(2, '2024-11-20', 'Lubrication and safety check', 2),
+(3, '2024-11-25', 'Calibration and software update', 3);
