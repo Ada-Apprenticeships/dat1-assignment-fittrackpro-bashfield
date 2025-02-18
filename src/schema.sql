@@ -373,7 +373,7 @@ VALUES
 (9, '2025-01-20', 'Frame inspection and tightening', 1),
 (10, '2025-01-25', 'Safety features check and padding replacement', 2);
 
-/*
+
 -- Creating my own sample data to check my tables and constraints
 
 -- Creating sample data for locations
@@ -401,68 +401,68 @@ VALUES
 INSERT INTO equipment (name, type, purchase_date, last_maintenance_date, next_maintenance_date, location_id)
 VALUES 
 ('Stationary Bike 3', 'Cardio', '2025-01-04', '2025-01-20', '2025-04-20', 3),
-('Rowing Machine 3', 'Cardio', '2024-11-12', '2025-01-01', '2025-04-01', 4),
+('Rowing Machine 3', 'Cardio', '2024-12-31', '2025-01-01', '2025-04-01', 4),
 ('Leg Press 3', 'Strength', '2024-11-13', '2025-01-05', '2025-04-05', 5);
 
 -- Creating sample data for classes
 INSERT INTO classes (name, description, capacity, duration, location_id)
 VALUES 
-('Yoga Basics', 'Introductory yoga class', 20, 60, 1),
-('HIIT Workout', 'High-intensity interval training', 15, 45, 2),
-('Spin Class', 'Indoor cycling workout', 20, 50, 1);
+('Dance Fitness', 'High-energy dance-based workouts', 15, 45, 3),
+('Crossfit', 'High-intensity movements with weights', 10, 60, 4),
+('Kickboxing', 'Indoor cardio and martial arts techniques', 20, 50, 5);
 
 -- Creating sample data for class_schedule
 INSERT INTO class_schedule (class_id, staff_id, start_time, end_time)
 VALUES 
-(1, 1, '2024-11-01 10:00:00', '2024-11-01 11:00:00'),
-(2, 2, '2024-11-15 18:00:00', '2024-11-15 18:45:00'),
-(3, 6, '2024-12-03 07:00:00', '2024-12-03 07:50:00');
+(7, 9, '2025-03-25 10:00:00', '2025-03-25 10:45:00'),
+(8, 10, '2025-04-15 18:00:00', '2025-04-15 19:00:00'),
+(9, 11, '2025-05-03 07:00:00', '2025-05-03 07:50:00');
 
 -- Creating sample data for memberships
 INSERT INTO memberships (member_id, type, start_date, end_date, status)
 VALUES
-(16, 'Premium', '2025-01-10', '2026-02-04', 'Active'), --
-(2, 'Basic', '2024-11-05', '2025-11-04', 'Active'),
-(3, 'Premium', '2024-11-10', '2025-11-09', 'Active');
+(16, 'Premium', '2025-01-20', '2026-02-20', 'Active'),
+(17, 'Basic', '2024-08-10', '2025-08-10', 'Active'),
+(18, 'Premium', '2024-09-25', '2025-09-25', 'Active');
 
 -- Creating sample data for attendance
 INSERT INTO attendance (member_id, location_id, check_in_time, check_out_time)
 VALUES 
-(5, 1, '2025-02-03 09:00:00', '2025-02-03 10:45:00'), --
-(2, 2, '2024-11-15 17:30:00', '2024-11-15 19:00:00'),
-(3, 1, '2024-12-03 08:00:00', '2024-12-03 09:15:00');
+(16, 1, '2025-02-03 09:00:00', '2025-02-03 10:45:00'),
+(17, 2, '2024-11-15 17:30:00', '2024-11-15 19:00:00'),
+(18, 1, '2024-12-03 08:00:00', '2024-12-03 09:15:00');
 
 -- Creating sample data for class_attendance
 INSERT INTO class_attendance (schedule_id, member_id, attendance_status)
 VALUES 
-(1, 16, 'Registered'), --
-(2, 16, 'Registered'), --
-(3, 1, 'Attended'); --
+(1, 16, 'Registered'),
+(2, 16, 'Registered'),
+(3, 1, 'Attended'); 
 
 -- Creating sample data for payments
 INSERT INTO payments (member_id, amount, payment_date, payment_method, payment_type)
 VALUES 
-(1, 50.00, '2024-11-01 10:00:00', 'Credit Card', 'Monthly membership fee'),
-(2, 30.00, '2024-11-05 14:30:00', 'Bank Transfer', 'Monthly membership fee'),
-(3, 50.00, '2024-11-10 09:15:00', 'Credit Card', 'Monthly membership fee');
+(16, 50.00, '2025-01-15 10:00:00', 'Credit Card', 'Monthly membership fee'),
+(17, 30.00, '2024-08-09 14:30:00', 'Bank Transfer', 'Monthly membership fee'),
+(18, 50.00, '2024-09-25 09:15:00', 'Cash', 'Monthly membership fee');
 
 -- Creating sample data for personal_training_sessions
 INSERT INTO personal_training_sessions (member_id, staff_id, session_date, start_time, end_time, notes)
 VALUES 
-(1, 9, '2025-02-05', '10:00:00', '11:00:00', 'Testing 1'), --
-(2, 9, '2025-02-10', '15:00:00', '16:00:00', 'Testing 2'), --
-(3, 6, '2024-12-07', '09:00:00', '10:00:00', 'Core workout and flexibility');
+(16, 09, '2025-02-27', '10:00:00', '11:00:00', 'Strength training'),
+(17, 10, '2025-03-10', '15:00:00', '16:00:00', 'Private spin class'),
+(18, 11, '2024-05-07', '09:00:00', '10:00:00', 'Core workout and flexibility');
 
 -- Creating sample data for member_health_metrics
 INSERT INTO member_health_metrics (member_id, measurement_date, weight, body_fat_percentage, muscle_mass, bmi)
 VALUES 
-(1, '2024-11-01', 70.5, 22.0, 35.0, 23.5),
-(2, '2024-11-15', 80.0, 18.0, 40.0, 24.0),
-(3, '2024-12-01', 65.0, 24.0, 32.0, 22.5);
+(16, '2025-02-01', 72.5, 24.0, 37.0, 25.5),
+(17, '2025-01-15', 78.0, 20.0, 42.0, 26.0),
+(18, '2024-12-01', 63.0, 22.0, 30.0, 20.5);
 
 -- Creating sample data for equipment_maintenance_log
 INSERT INTO equipment_maintenance_log (equipment_id, maintenance_date, description, staff_id)
 VALUES 
-(1, '2024-11-15', 'Routine maintenance and belt adjustment', 1),
-(2, '2024-11-20', 'Lubrication and safety check', 2),
-(3, '2024-11-25', 'Calibration and software update', 3);
+(1, '2025-01-20', 'Routine maintenance', 9),
+(2, '2025-01-01', 'Safety check', 10),
+(3, '2025-01-05', 'Software update', 11);
