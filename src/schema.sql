@@ -64,7 +64,7 @@ CREATE TABLE staff (
 CREATE TABLE equipment (
     equipment_id INTEGER PRIMARY KEY ,	
     name TEXT NOT NULL CHECK(LENGTH(name) <= 25) ,
-    type TEXT NOT NULL CHECK(type IN ('Cardio', 'Strength') AND LENGTH(type) <= 8) ,
+    type TEXT NOT NULL CHECK(type IN ('Cardio', 'Strength')) ,
     purchase_date DATE NOT NULL CHECK(purchase_date REGEXP '^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$') ,
     last_maintenance_date DATE NOT NULL CHECK(last_maintenance_date REGEXP '^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0,1])$') ,
     next_maintenance_date DATE NOT NULL CHECK(next_maintenance_date REGEXP '^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0,1])$') ,
@@ -130,7 +130,7 @@ CREATE TABLE class_attendance (
 CREATE TABLE payments (
     payment_id INTEGER PRIMARY KEY ,	
     member_id INTEGER NOT NULL ,	
-    amount REAL NOT NULL CHECK(amount > 0) ,
+    amount REAL NOT NULL CHECK(amount = ROUND(amount, 1)) ,
     payment_date TEXT NOT NULL CHECK(payment_date REGEXP '^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0,1])\s([0-1][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$') ,
     payment_method TEXT NOT NULL CHECK(payment_method IN ('Credit Card', 'Bank Transfer', 'PayPal', 'Cash')) ,
     payment_type TEXT NOT NULL CHECK(payment_type IN ('Monthly membership fee', 'Day pass')) ,
@@ -155,10 +155,10 @@ CREATE TABLE member_health_metrics (
     metric_id INTEGER PRIMARY KEY ,
     member_id INTEGER NOT NULL ,
     measurement_date TEXT CHECK(measurement_date REGEXP '^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0,1])$') ,
-    weight INTEGER,--DECIMAL(5,2) ,
-    body_fat_percentage DECIMAL(5,2) ,
-    muscle_mass DECIMAL(5,2) ,
-    bmi DECIMAL(5,2) ,
+    weight REAL CHECK(weight = ROUND(weight, 1)) ,
+    body_fat_percentage REAL CHECK(body_fat_percentage = ROUND(body_fat_percentage, 1)) ,
+    muscle_mass REAL CHECK(muscle_mass = ROUND(muscle_mass, 1)) ,
+    bmi REAL CHECK(bmi = ROUND(bmi, 1)) ,
     FOREIGN KEY (member_id) REFERENCES members(member_id)
 );
 
@@ -373,7 +373,7 @@ VALUES
 (9, '2025-01-20', 'Frame inspection and tightening', 1),
 (10, '2025-01-25', 'Safety features check and padding replacement', 2);
 
-
+/*
 -- Creating my own sample data to check my tables and constraints
 
 -- Creating sample data for locations

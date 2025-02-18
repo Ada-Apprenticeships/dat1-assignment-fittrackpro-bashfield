@@ -12,7 +12,8 @@ SELECT equipment_id,
     name, 
     next_maintenance_date
 FROM equipment
-WHERE DATE(next_maintenance_date) <= DATE('now', '+30 days');
+WHERE DATE(next_maintenance_date) BETWEEN DATE('now') AND DATE('now', '+30 days');
+
 
 -- 2. Count equipment types in stock
 -- NOTE FOR MARKER: Interpreted 'in stock' meaning all equipment listed
@@ -21,9 +22,9 @@ SELECT type AS equipment_type,
 FROM equipment
 GROUP BY type;
 
+
 -- 3. Calculate average age of equipment by type (in days)
 SELECT type AS equipment_type, 
     CAST(AVG(julianday('now') - julianday(purchase_date)) AS INTEGER) AS avg_age_days
 FROM equipment
---WHERE purchase_date IS NOT NULL
 GROUP BY type;

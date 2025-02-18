@@ -24,6 +24,6 @@ SELECT s.staff_id AS trainer_id,
 FROM staff AS s
 JOIN personal_training_sessions AS p
 ON s.staff_id = p.staff_id
-WHERE s.position = 'Trainer' AND p.session_date <= DATE('now', '+30 days')
+WHERE s.position = 'Trainer' AND DATE(p.session_date) BETWEEN DATE('now') AND DATE('now', '+30 days')
 GROUP BY s.staff_id
 ORDER BY session_count DESC;

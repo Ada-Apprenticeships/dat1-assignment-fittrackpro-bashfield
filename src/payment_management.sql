@@ -15,25 +15,27 @@ WHERE member_id = 11;
 
 -- 2. Calculate total revenue from membership fees for each month of the last year 
 -- NOTE FOR MARKER: Interpreted 'last year' as months from the year 2024
-SELECT CASE strftime('%m', payment_date)
-        WHEN '01' THEN 'January'
-        WHEN '02' THEN 'February'
-        WHEN '03' THEN 'March'
-        WHEN '04' THEN 'April'
-        WHEN '05' THEN 'May'
-        WHEN '06' THEN 'June'
-        WHEN '07' THEN 'July'
-        WHEN '08' THEN 'August'
-        WHEN '09' THEN 'September'
-        WHEN '10' THEN 'October'
-        WHEN '11' THEN 'November'
-        WHEN '12' THEN 'December'
-    END AS month,
-    SUM(amount) AS total_revenue 
-FROM payments
-WHERE strftime('%Y', payment_date) = '2024'
-GROUP BY month
-ORDER BY strftime('%Y%m%d', payment_date);
+WITH months AS (
+    SELECT 'January' AS month, '01' AS month_num UNION ALL
+    SELECT 'February', '02' UNION ALL
+    SELECT 'March', '03' UNION ALL
+    SELECT 'April', '04' UNION ALL
+    SELECT 'May', '05' UNION ALL
+    SELECT 'June', '06' UNION ALL
+    SELECT 'July', '07' UNION ALL
+    SELECT 'August', '08' UNION ALL
+    SELECT 'September', '09' UNION ALL
+    SELECT 'October', '10' UNION ALL
+    SELECT 'November', '11' UNION ALL
+    SELECT 'December', '12'
+)
+SELECT m.month,
+       IFNULL(SUM(p.amount), 0) AS total_revenue
+FROM months m
+LEFT JOIN payments p 
+ON strftime('%m', p.payment_date) = m.month_num AND strftime('%Y', p.payment_date) = '2024'
+GROUP BY m.month
+ORDER BY m.month_num;
 
 
 -- 3. Find all day pass purchases
