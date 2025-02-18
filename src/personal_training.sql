@@ -8,7 +8,6 @@ PRAGMA foreign_keys = ON;
 -- Personal Training Queries
 
 -- 1. List all personal training sessions for a specific trainer
--- NOTE FOR MARKER: Interpreted 'member_id' as the members first and last name
 SELECT p.session_id, 
     (m.first_name||' '||m.last_name) AS member_name, 
     p.session_date, 

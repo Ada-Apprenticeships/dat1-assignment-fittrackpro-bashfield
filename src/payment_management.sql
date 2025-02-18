@@ -12,7 +12,6 @@ UPDATE payments
 SET amount = 50.00, payment_date = CURRENT_TIMESTAMP, payment_method = 'Credit Card', payment_type = 'Monthly membership fee'
 WHERE member_id = 11;
 
-
 -- 2. Calculate total revenue from membership fees for each month of the last year 
 -- NOTE FOR MARKER: Interpreted 'last year' as months from the year 2024
 WITH months AS (
@@ -36,7 +35,6 @@ LEFT JOIN payments p
 ON strftime('%m', p.payment_date) = m.month_num AND strftime('%Y', p.payment_date) = '2024'
 GROUP BY m.month
 ORDER BY m.month_num;
-
 
 -- 3. Find all day pass purchases
 -- NOTE FOR MARKER: Added 'ORDER BY' to show the most recent purchase first

@@ -12,7 +12,6 @@ INSERT INTO attendance (member_id, location_id, check_in_time, check_out_time)
 VALUES
 (7, 1, DATETIME('now', 'localtime'), NULL);
 
-
 -- 2. Retrieve a member's attendance history
 SELECT 
   strftime('%Y-%m-%d', check_in_time) AS visit_date, 
@@ -20,7 +19,6 @@ SELECT
   strftime('%H:%M:%S', check_out_time) AS check_out_time
 FROM attendance
 WHERE member_id = 5;
-
 
 -- 3. Find the busiest day of the week based on gym visits
 WITH daily_visits AS (
@@ -41,7 +39,6 @@ SELECT day_of_week,
   visit_count
 FROM daily_visits
 WHERE visit_count = (SELECT MAX(visit_count) FROM daily_visits);
-
 
 -- 4. Calculate the average daily attendance for each location
 WITH daily_attendance AS (

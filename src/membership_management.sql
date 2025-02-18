@@ -36,4 +36,5 @@ SELECT ms.membership_id AS member_id,
 FROM memberships AS ms
 INNER JOIN members AS m
 ON ms.member_id = m.member_id
-WHERE strftime('%Y', ms.end_date) = strftime('%Y', 'now');
+WHERE strftime('%Y', ms.end_date) = strftime('%Y', 'now')
+ORDER BY ms.end_date;
